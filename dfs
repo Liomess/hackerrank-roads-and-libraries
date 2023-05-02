@@ -1,0 +1,22 @@
+def roadsAndLibraries(n, c_lib, c_road, cities):
+    def dfs(i,visited,adj_list):
+        visited[i]=True
+        num=1
+        arr=adj_list[i]
+        for j in arr:
+            if visited[j]==False:
+                num+=dfs(j,visited,adj_list)
+        return num
+    adj_list=[[] for i in range(n+1)]
+    for x,y in cities:
+        adj_list[x].append(y)
+        adj_list[y].append(x)
+    visited=[False]*(n+1)
+    totalcost=0
+    for i in range(1,n+1):
+        if visited[i]==False:
+            num=dfs(i,visited,adj_list)
+            c1=(num-1)*c_road+c_lib
+            c2=num*c_lib
+            totalcost+=min(c1,c2)
+    return totalcost
